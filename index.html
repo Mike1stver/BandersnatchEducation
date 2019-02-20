@@ -5,8 +5,149 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Bandersnatch Education</title>
+    <style>
+      p{
+        display: flex;
+        align-items: center;
+        margin: 0;
+      }
+      .alternativas{
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: baseline;
+      }
+      .header{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .preguntas{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 400px;
+        border: 1px solid red;
+      }
+      .container{
+        display: inherit;
+        width : 1000px;
+        justify-content: inherit;
+        align-items:inherit;
+      }
+      input{
+        font-size: 15px;
+        margin: 13px;
+      }
+      button{
+        display: block;
+        width: 150px;
+        padding: 10px 0;     
+        margin: 0 40px;   
+      }
+    </style>
 </head>
-<body>
+<!-- <body>
     <h1> Bandersnatc Education</h1>
+</body> -->
+
+<body>
+  <header class="header">
+      <div class="container">
+          <h1>Curso: Álgrebra</h1>
+      </div>
+  </header>
+  <section class="preguntas" id="pregunta">
+    <div class="container" id="preguntaContainer">
+
+    </div>
+  </section>
+
 </body>
+<script>
+
+class Preguntas {
+    constructor(imagen, opcion1, opcion2, opcion3, opcion4, opcion5, correcta) {
+      this.imagen = imagen
+      this.opcion1 = opcion1
+      this.opcion2 = opcion2
+      this.opcion3 = opcion3
+      this.opcion4 = opcion4
+      this.opcion5 = opcion5
+      this.correcta = correcta
+    } 
+  }
+
+function _(id){
+    return document.getElementById(id)
+}
+
+const pregunta = _('pregunta')
+let preguntaContainer = _('preguntaContainer')
+
+
+function mostrarPregunta({imagen, opcion1, opcion2, opcion3, opcion4, opcion5, correcta}){
+  // preguntaContainer.appendChild(document.createElement('figure'))
+  preguntaContainer.innerHTML = `<figure> <img src="images/${imagen}.jpg" alt="" id="imagenPregunta"></figure>`
+  preguntaContainer.innerHTML += `<form class="alternativas" action="" id="alternativas">
+                                    <p>
+                                      <input type="radio" name="alternativas" value="A" id="alternativaPreg1"><br>
+                                      <label for="alternativaPreg1">A. ${opcion1}</label>
+                                    </p>
+                                    <p>
+                                      <input type="radio" name="alternativas" value="B" id="alternativaPreg2"><br>
+                                      <label for="alternativaPreg2">B. ${opcion2}</label>
+                                    </p>
+                                    <p>
+                                      <input type="radio" name="alternativas" value="C" id="alternativaPreg3"><br>
+                                      <label for="alternativaPreg3">C. ${opcion3}</label>
+                                    </p>
+                                    <p>
+                                      <input type="radio" name="alternativas" value="D" id="alternativaPreg4"><br>
+                                      <label for="alternativaPreg4">D. ${opcion4}</label>
+                                    </p>
+                                    <p>
+                                      <input type="radio" name="alternativas" value="E" id="alternativaPreg5"><br>
+                                      <label for="alternativaPreg5">E. ${opcion5}</label>
+                                    </p>
+                                  </form>
+                                  <button form="alternativas" onclick="analizarRespuesta()"> Enviar Respuesta</button>
+                                  <h1>Status Resultado</h1>`
+}  
+  
+  const pregunta1 = new Preguntas('Preg1', '-20', '-18', '-16', '-4', '16', 'B')
+  const pregunta2 = new Preguntas('Preg2', '2', '-2', '-2a + 1', '-2a - 1', '2a - 1', 'B')
+  let esCorrecto = true
+  mostrarPregunta(pregunta1)
+
+  function analizarRespuesta(){
+    const seleccion = alternativaSeleccionada()
+    // console.log(`${seleccion}`)
+     if (seleccion === preguntaActual.correcta){
+        esCorrecto = true
+     }else{
+        esCorrecto = false
+     }
+    mostrarPregunta(pregunta2)
+  }
+
+  function alternativaSeleccionada(){
+    var radios = document.getElementsByName('alternativas')
+    console.log(radios)
+    for(var i=0; i< radios.length; i++){
+      if(radios[i].checked){
+        return radios[i].value
+        break
+      }
+    }
+
+  }
+
+  // function MostrarPregunta(pregunta){
+  //   imagenPregunta.src = `images/${pregunta.imagen}.jpg`;
+  //   // console.log()
+  // } 
+
+</script>
+
 </html>
