@@ -5,45 +5,153 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Bandersnatch Education</title>
+    <meta name="viewport" content="width = device-width, initial-scale=1"> </meta>
     <style>
+      .contenedorPrincipal{
+        display: grid;
+        grid-template: 1fr 5fr 1fr /2fr 1fr 0.5fr;
+        height: 100vh;
+        grid-template-areas: "header header header " 
+                             "imagenPregunta alternativas button" 
+                             "footer footer footer" ; 
+        grid-gap:10px;
+        justify-items: center;
+        align-items: center;
+      }
+      figure{
+        margin: 0;
+      }
       p{
         display: flex;
         align-items: center;
+        /* justify-conte  nt: center; */
         margin: 0;
+        width: 300px;
       }
-      .alternativas{
+      .formulario{
+        grid-area: alternativas;
+        /* align-self:center; */
         display: flex;
         justify-content: center;
         flex-direction: column;
         align-items: baseline;
+        /* width: auto; */
+        /* width: 30%; */
+        background-color: white;
+        border: 1px solid grey;
+        /* align-self:flex-end; */
+      }
+      header{
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
       .header{
+        grid-area: header;
+        background-color: rgba(10, 14, 255, 0.712);
         display: flex;
         justify-content: center;
         align-items: center;
+        align-self: stretch;
+        justify-self: stretch;
       }
       .preguntas{
+        background-color:  #1b2127;
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 400px;
+        height: 600px;
         border: 1px solid red;
       }
-      .container{
+      /* .container{
         display: inherit;
-        width : 1000px;
+        width : 1500px;
         justify-content: inherit;
         align-items:inherit;
-      }
+        height: inherit;
+      } */
       input{
         font-size: 15px;
         margin: 13px;
       }
-      button{
-        display: block;
-        width: 150px;
-        padding: 10px 0;     
-        margin: 0 40px;   
+      .btnResponder{
+        grid-area: button;
+        display: flex;
+        justify-content: center;
+        align-items : center;
+      }
+      .btnResponder2{
+        width: 180px;
+        height: 90px;
+        /* grid-area: button; */
+        padding: 10px 0;
+        font-size: 20px;
+        /* margin: 0 40px;   */
+        background-color: rgba(88, 189, 180, 0.822);
+      }
+      .btn-start {
+        width: 400px;
+        height: 100px;
+        background: #ecf0f1;
+        color: #2c3e50;
+        font-size: 2.5rem;
+        position: absolute;
+        top: calc(50% - 50px);
+        left: calc(50% - 200px);
+      }
+      .hide {
+        display: none;
+      }
+      .imagenPregunta{
+        grid-area: imagenPregunta;
+        display: flex;
+        flex-direction: column;
+        /* align-items: center; */
+        justify-content: center;
+        /* width: 300px;
+        height: 400px; */
+        /* max-width: 60%;
+        background-color: white; */
+        border: 1px solid grey;
+        padding: 25px;
+      }
+      img{
+        object-fit: cover;
+        max-width: inherit;
+        /* height: 300px; */
+      }
+
+      .preguntas img{
+        /* width: 800px;
+        height: 700px; */
+        /* object-fit: cover; */
+      }
+      .formulario h2{
+        margin: 0 20px;
+      }
+      h2{
+        text-align: left;
+      }
+      label{
+        font-size: 20px;
+      }
+      .footer{
+        grid-area: footer;
+        background-color: skyblue;
+        justify-self: stretch;
+        align-self: stretch;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      footer{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .hide-border{
+        border : none;
       }
     </style>
 </head>
@@ -52,101 +160,205 @@
 </body> -->
 
 <body>
-  <header class="header">
-      <div class="container">
-          <h1>Curso: Álgrebra</h1>
+    <div class="contenedorPrincipal" >
+      <div class="header">
+          <header>
+            <h1>Curso: Álgrebra</h1>
+          </header>
       </div>
-  </header>
-  <section class="preguntas" id="pregunta">
-    <div class="container" id="preguntaContainer">
-
+      <div class="imagenPregunta hide-border" id="imagenPregunta">
+        
+      </div>
+      <div class="formulario hide-border" id="formulario">
+        
+      </div>
+      <div class="btnResponder ">
+          <button id="btnResponder" form="alternativas" class="btnResponder2 hide"> Enviar Respuesta</button>
+      </div>
+      <div class="btnIniciar">
+          <button id="btnEmpezar" class="btn-start" onclick="empezarJuego()">Empezar a Evaluación!</button>
+      </div>
+      <div class="footer">
+        <footer>
+          <h1>Temporizador</h1>
+        </footer>
+      </div>
+      
     </div>
-  </section>
-
 </body>
+
 <script>
 
-class Preguntas {
-    constructor(imagen, opcion1, opcion2, opcion3, opcion4, opcion5, correcta) {
-      this.imagen = imagen
-      this.opcion1 = opcion1
-      this.opcion2 = opcion2
-      this.opcion3 = opcion3
-      this.opcion4 = opcion4
-      this.opcion5 = opcion5
-      this.correcta = correcta
+const btnEmpezar = document.getElementById('btnEmpezar')
+const imagenPregunta = document.getElementById('imagenPregunta')
+const formulario = document.getElementById('formulario')
+const btnResponder = document.getElementById('btnResponder')
+
+// btnResponder
+
+const numeroPreguntas = 15
+
+class Formulario {
+    constructor() {
+    this.inicializar()
     } 
-  }
-
-function _(id){
-    return document.getElementById(id)
-}
-
-const pregunta = _('pregunta')
-let preguntaContainer = _('preguntaContainer')
-
-
-function mostrarPregunta({imagen, opcion1, opcion2, opcion3, opcion4, opcion5, correcta}){
-  // preguntaContainer.appendChild(document.createElement('figure'))
-  preguntaContainer.innerHTML = `<figure> <img src="images/${imagen}.jpg" alt="" id="imagenPregunta"></figure>`
-  preguntaContainer.innerHTML += `<form class="alternativas" action="" id="alternativas">
-                                    <p>
-                                      <input type="radio" name="alternativas" value="A" id="alternativaPreg1"><br>
-                                      <label for="alternativaPreg1">A. ${opcion1}</label>
-                                    </p>
-                                    <p>
-                                      <input type="radio" name="alternativas" value="B" id="alternativaPreg2"><br>
-                                      <label for="alternativaPreg2">B. ${opcion2}</label>
-                                    </p>
-                                    <p>
-                                      <input type="radio" name="alternativas" value="C" id="alternativaPreg3"><br>
-                                      <label for="alternativaPreg3">C. ${opcion3}</label>
-                                    </p>
-                                    <p>
-                                      <input type="radio" name="alternativas" value="D" id="alternativaPreg4"><br>
-                                      <label for="alternativaPreg4">D. ${opcion4}</label>
-                                    </p>
-                                    <p>
-                                      <input type="radio" name="alternativas" value="E" id="alternativaPreg5"><br>
-                                      <label for="alternativaPreg5">E. ${opcion5}</label>
-                                    </p>
-                                  </form>
-                                  <button form="alternativas" onclick="analizarRespuesta()"> Enviar Respuesta</button>
-                                  <h1>Status Resultado</h1>`
-}  
   
-  const pregunta1 = new Preguntas('Preg1', '-20', '-18', '-16', '-4', '16', 'B')
-  const pregunta2 = new Preguntas('Preg2', '2', '-2', '-2a + 1', '-2a - 1', '2a - 1', 'B')
-  let esCorrecto = true
-  mostrarPregunta(pregunta1)
 
-  function analizarRespuesta(){
-    const seleccion = alternativaSeleccionada()
-    // console.log(`${seleccion}`)
-     if (seleccion === preguntaActual.correcta){
-        esCorrecto = true
-     }else{
-        esCorrecto = false
-     }
-    mostrarPregunta(pregunta2)
-  }
-
-  function alternativaSeleccionada(){
-    var radios = document.getElementsByName('alternativas')
-    console.log(radios)
-    for(var i=0; i< radios.length; i++){
-      if(radios[i].checked){
-        return radios[i].value
-        break
-      }
-    }
+  inicializar(){
+    this.analizarRespuesta= this.analizarRespuesta.bind(this)
+    this.toggleBtnEmpezar()
+    this.cargarPreguntas()
+    this.seleccionarPregunta()
+    this.mostrarFormulario()
 
   }
+
+  toggleBtnEmpezar(){
+          if (btnEmpezar.classList.contains('hide')){
+            btnEmpezar.classList.remove('hide')
+            // imagenPregunta.classList.add('hide-border')
+            // formulario.classList.add('hide-border')
+            // btnResponder.removeEventListener('click', this.analizarRespuesta)
+            
+
+          }else{ // Incio
+            btnEmpezar.classList.add('hide')
+            imagenPregunta.classList.remove('hide-border')
+            formulario.classList.remove('hide-border')
+            btnResponder.addEventListener('click', this.analizarRespuesta)
+            btnResponder.classList.remove('hide')
+          }
+  }
+
+  cargarPreguntas(){
+    this.pregunta = [ [ '-2', '2', '3', '8','C'],
+                      [ '{1;2;3;4;5;6}', '{7;8;9;10;11;12; ...}', '{1;2;3;4;5;6,7}', '{8;9;10;11;12;13 ...}','A'],
+                      [ '-2', '2', '3', '8','C'],
+                      [ '20n', '70(n-1)', '50 + 20n', '50 + 20(n - 1)','D'],
+                      [ '3x', '20', 'x + 2', '3x + 2','D'],  
+                      [ '2n', '2n - 1', '2n - 2', '2n - 4','D'],  
+                      [ 'Costo(n) = 0,2n + 2,50', 'Costo(n) = 2,5n + 0,2', 'Costo(n) = 0,25n + 2,0', 'Costo(n) = 2n + 2,5','A'],   
+                      [ 'x - x/3 = 2', 'x/3 + 2 = x/2', '2x/3 + 2 = x/2', 'x/3 - 2 = x/2','B'],  
+                      [ '55 y 15', '15 y 85', '320 y 80', '235 y 165','C'],  
+                      [ '2x + 4y = 460 ; 7x + 3y = 460', '7x + 3x = 260 ; 10x = 260', '2x + 4x = 200 ; 6x = 200', '2x + 4y = 200 ; 7x + 3y = 260','D'],  
+                      [ '10 cm', '6.5 cm', '5 cm', '0.2 cm','C'],  
+                      [ '-4.5', '-3', '-2.5', '1.666666667','B'],  
+                      [ '0.8', '1.6', '2', '4','C'],  
+                      [ 'T = 40d', 'T = 100d', 'T = 40 + 100d', 'T = 40d + 100','C'],  
+                      [ 'x = -5', 'x = 5', 'x = 1', 'x = -3','B']  ]
+  }
+
+  seleccionarPregunta(){
+    this.nmroPreguntaMostrar = Math.floor(Math.random() * numeroPreguntas) + 1
+  }  
+
+  mostrarFormulario(){
+    imagenPregunta.innerHTML =  `
+                                <h2>Pregunta N°: ${this.nmroPreguntaMostrar} </h2>
+                                <figure> <img src="images/Preg${this.nmroPreguntaMostrar}.jpg" alt="" id="imagenPregunta"></figure>
+                                `
+    formulario.innerHTML =  ` <h2> Seleccione una de las alternativas: </h2>
+                              <form class="alternativas" action="" id="alternativas">
+                                <p>
+                                  <input type="radio" name="alternativas" value="A" id="alternativaPreg1">
+                                  <label for="alternativaPreg1">A. ${this.pregunta[this.nmroPreguntaMostrar-1][0]}</label>
+                                </p>
+                                <p>
+                                  <input type="radio" name="alternativas" value="B" id="alternativaPreg2">
+                                  <label for="alternativaPreg2">B. ${this.pregunta[this.nmroPreguntaMostrar-1][1]}</label>
+                                </p>
+                                <p>
+                                  <input type="radio" name="alternativas" value="C" id="alternativaPreg3">
+                                  <label for="alternativaPreg3">C. ${this.pregunta[this.nmroPreguntaMostrar-1][2]}</label>
+                                </p>
+                                <p>
+                                  <input type="radio" name="alternativas" value="D" id="alternativaPreg4">
+                                  <label for="alternativaPreg4">D. ${this.pregunta[this.nmroPreguntaMostrar-1][3]}</label>
+                                </p>
+                              </form>
+                            `
+  }
+
+  analizarRespuesta(ev){
+    event.preventDefault()
+    const radios = document.getElementById('alternativas')
+    btnResponder.removeEventListener('click', this.analizarRespuesta)
+    
+       for(var i=0; i< radios.length; i++){
+         if(radios[i].checked){    
+           if (radios[i].value === this.pregunta[this.nmroPreguntaMostrar-1][4]){
+             alert(`Se seleccionó ${radios[i].value}, es la respuesta correcta!!`)
+              }else{
+             alert(`Se seleccionó ${radios[i].value}, no es correcto!!`)
+           }
+
+         }
+       }
+       this.seleccionarPregunta()
+       this.mostrarFormulario()
+       btnResponder.addEventListener('click', this.analizarRespuesta)
+
+  }   
+
+}
+  
+// function _(id){
+//     return document.getElementById(id)
+// }
+
+// const pregunta = _('pregunta')
+// let preguntaContainer = _('preguntaContainer')
+
+
+// function mostrarPregunta({imagen, opcion1, opcion2, opcion3, opcion4, opcion5, correcta}){
+//   // preguntaContainer.appendChild(document.createElement('figure'))
+//   preguntaContainer.innerHTML = `<figure> <img src="images/${imagen}.jpg" alt="" id="imagenPregunta"></figure>`
+//   preguntaContainer.innerHTML += `<form class="alternativas" action="" id="alternativas">
+//                                     <p>
+//                                       <input type="radio" name="alternativas" value="A" id="alternativaPreg1"><br>
+//                                       <label for="alternativaPreg1">A. ${opcion1}</label>
+//                                     </p>
+//                                     <p>
+//                                       <input type="radio" name="alternativas" value="B" id="alternativaPreg2"><br>
+//                                       <label for="alternativaPreg2">B. ${opcion2}</label>
+//                                     </p>
+//                                     <p>
+//                                       <input type="radio" name="alternativas" value="C" id="alternativaPreg3"><br>
+//                                       <label for="alternativaPreg3">C. ${opcion3}</label>
+//                                     </p>
+//                                     <p>
+//                                       <input type="radio" name="alternativas" value="D" id="alternativaPreg4"><br>
+//                                       <label for="alternativaPreg4">D. ${opcion4}</label>
+//                                     </p>
+//                                     <p>
+//                                       <input type="radio" name="alternativas" value="E" id="alternativaPreg5"><br>
+//                                       <label for="alternativaPreg5">E. ${opcion5}</label>
+//                                     </p>
+//                                   </form>
+//                                   <button form="alternativas" onclick="analizarRespuesta()"> Enviar Respuesta</button>
+//                                   <h1>Status Resultado</h1>`
+// }  
+  
+//   const pregunta1 = new Preguntas('Preg1', '-20', '-18', '-16', '-4', '16', 'B')
+//   const pregunta2 = new Preguntas('Preg2', '2', '-2', '-2a + 1', '-2a - 1', '2a - 1', 'B')
+//   let esCorrecto = true
+//   mostrarPregunta(pregunta1)
+
+
+
+
+
+//   
 
   // function MostrarPregunta(pregunta){
   //   imagenPregunta.src = `images/${pregunta.imagen}.jpg`;
   //   // console.log()
   // } 
+
+  function empezarJuego() {
+        //var juego = new Juego() // Para poder ver la secuencia generada y ver lo que esta poasando en la consola
+        window.formulario = new Formulario()
+  }
 
 </script>
 
